@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-install_tween</actionName>
+            <displayName>install_tween</displayName>
+            <goals>
+                <goal>install:install-file</goal>
+            </goals>
+            <properties>
+                <groupId>com.aurelienribon</groupId>
+                <artifactId>tween-engine-api</artifactId>
+                <packaging>jar</packaging>
+                <version>6.3.3</version>
+                <file>libs/tween-engine-api.jar</file>
+                <sources>libs/tween-engine-api-sources.jar</sources>
+                <generatePom>true</generatePom>
+            </properties>
+        </action>
+    </actions>
