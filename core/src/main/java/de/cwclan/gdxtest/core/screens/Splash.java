@@ -5,8 +5,11 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -47,13 +50,14 @@ public class Splash implements Screen {
         tweenManager = new TweenManager();
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
-        Texture texture = new Texture("libgdx-logo.png");
+        Texture texture = new Texture("img/libgdx-logo.png");
         splash = new Sprite(texture);
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Tween.set(splash, SpriteAccessor.ALPHA).target(0).start(tweenManager);
-        Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).start(tweenManager);
-        Tween.to(splash, SpriteAccessor.ALPHA, 2).target(0).delay(2).start(tweenManager);
+        Tween.to(splash, SpriteAccessor.ALPHA, .5f).target(1).repeatYoyo(1, 1).setCallback((int type, BaseTween<?> source) -> {
+            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+        }).start(tweenManager);
 
     }
 
@@ -71,6 +75,8 @@ public class Splash implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        splash.getTexture().dispose();
     }
 
 }

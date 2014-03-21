@@ -9,6 +9,8 @@ public class GdxTestDesktop {
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.useGL20 = true;
+                config.vSyncEnabled = true;
+                
 		new LwjglApplication(new GdxTest(), config);
 	}
 }
