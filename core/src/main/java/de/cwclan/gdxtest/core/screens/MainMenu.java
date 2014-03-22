@@ -35,7 +35,6 @@ public class MainMenu implements Screen {
     private Skin skin;
     private Table table;
     private TextButton exitButton, startButton;
-    private BitmapFont whiteFont;
     private Label heading;
     private TweenManager tweenManager;
 
@@ -65,20 +64,13 @@ public class MainMenu implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        whiteFont = new BitmapFont(Gdx.files.internal("font/verdana_white.fnt"), false);
 
-        skin = new Skin(new TextureAtlas("ui/atlas.pack"));
+        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
 
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.up = skin.getDrawable("button.up");
-        buttonStyle.down = skin.getDrawable("button.down");
-        buttonStyle.pressedOffsetX = 1;
-        buttonStyle.pressedOffsetY = -1;
-        buttonStyle.font = whiteFont;
 
-        buttonStyle.fontColor = Color.BLACK;
+        heading = new Label("Strange Stuff", skin, "big");
 
-        exitButton = new TextButton("exit", buttonStyle);
+        exitButton = new TextButton("schluss", skin);
         exitButton.pad(5);
         exitButton.addListener(new ClickListener() {
 
@@ -89,7 +81,7 @@ public class MainMenu implements Screen {
 
         });
 
-        startButton = new TextButton("start", buttonStyle);
+        startButton = new TextButton("los", skin);
         startButton.pad(5);
         startButton.addListener(new ClickListener() {
 
@@ -99,9 +91,6 @@ public class MainMenu implements Screen {
             }
 
         });
-
-        heading = new Label("Strange Stuff", new Label.LabelStyle(whiteFont, Color.WHITE));
-        heading.setFontScale(1.5f);
 
         /*
          *setting up the table
@@ -162,7 +151,6 @@ public class MainMenu implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-        whiteFont.dispose();
 
     }
 

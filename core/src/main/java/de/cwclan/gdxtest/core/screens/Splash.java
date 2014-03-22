@@ -7,7 +7,6 @@ package de.cwclan.gdxtest.core.screens;
 
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.cwclan.gdxtest.core.tween.SpriteAccessor;
+import java.awt.Point;
 
 /**
  *
@@ -42,6 +42,7 @@ public class Splash implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        new Point();
     }
 
     @Override
@@ -56,7 +57,7 @@ public class Splash implements Screen {
 
         Tween.set(splash, SpriteAccessor.ALPHA).target(0).start(tweenManager);
         Tween.to(splash, SpriteAccessor.ALPHA, .5f).target(1).repeatYoyo(1, 1).setCallback((int type, BaseTween<?> source) -> {
-            ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
         }).start(tweenManager);
 
     }
