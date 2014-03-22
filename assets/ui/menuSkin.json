@@ -91,7 +91,7 @@
     },
     "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
         "default": {
-            "font": "white32",
+            "font": "white16",
             "fontColorUnselected": "white",
             "fontColorSelected": "black",
             "selection": "default.selection"

@@ -43,11 +43,11 @@ public class MainMenu implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        tweenManager.update(delta);
 
         stage.act(delta);
         stage.draw();
 
+        tweenManager.update(delta);
 //        Table.drawDebug(stage);
     }
 
@@ -147,10 +147,12 @@ public class MainMenu implements Screen {
         Tween.from(table, ActorAccessor.ALPHA, .5f).target(0).start(tweenManager);
         Tween.from(table, ActorAccessor.Y, .5f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);
 
+        tweenManager.update(Gdx.graphics.getDeltaTime());
     }
 
     @Override
     public void hide() {
+        dispose();
     }
 
     @Override

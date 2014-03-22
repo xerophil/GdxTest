@@ -39,7 +39,7 @@ public class LevelMenu implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        Table.drawDebug(stage);
+        Table.drawDebug(stage);
         stage.act();
         stage.draw();
     }
@@ -48,7 +48,7 @@ public class LevelMenu implements Screen {
     public void resize(int width, int height) {
         stage.setViewport(width, height, true);
         table.invalidateHierarchy();
-        table.setSize(width, height);
+        setupTable();
     }
 
     @Override
@@ -58,9 +58,10 @@ public class LevelMenu implements Screen {
 
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
 
-        list = new List(new String[]{"one", "two", "three", "and", "so", "on"}, skin);
+        list = new List(new String[]{"onesadasdasdsadasdasdsadasd", "two", "three", "and", "so", "on","one", "two", "three", "and", "so", "on","one", "two", "three", "and", "so", "on"}, skin);
 
         scrollPane = new ScrollPane(list, skin);
+        scrollPane.setWidth(30);
 
         playButton = new TextButton("Druf da", skin);
         playButton.pad(5);
@@ -76,18 +77,26 @@ public class LevelMenu implements Screen {
         });
 
         table = new Table(skin);
+        setupTable();
+
+    }
+
+    private void setupTable() {
+        table.clear();
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
-        table.add("Select Level", "big").colspan(2).center().row();
-        table.add(scrollPane).expandY();
+        table.add().width(table.getWidth()/5);
+        table.add("Select Level", "big").colspan(1).center();
+        table.add().width(table.getWidth()/5).row();
+        table.add(scrollPane).colspan(2).left().expandY();
         table.add(playButton).row();
-        table.add(backButton).colspan(2);
+        table.add(backButton).colspan(3);
         stage.addActor(table);
-
     }
 
     @Override
     public void hide() {
+        dispose();
     }
 
     @Override
