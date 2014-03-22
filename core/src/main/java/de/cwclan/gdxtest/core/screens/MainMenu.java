@@ -66,7 +66,7 @@ public class MainMenu implements Screen {
 
 
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
-
+        
 
         heading = new Label("Strange Stuff", skin, "big");
 
