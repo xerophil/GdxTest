@@ -5,16 +5,19 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  *
@@ -36,7 +39,7 @@ public class LevelMenu implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Table.drawDebug(stage);
+//        Table.drawDebug(stage);
         stage.act();
         stage.draw();
     }
@@ -62,15 +65,22 @@ public class LevelMenu implements Screen {
         playButton = new TextButton("Druf da", skin);
         playButton.pad(5);
 
-        backButton = new TextButton("zurück", skin);
+        backButton = new TextButton("zurück", skin, "small");
         backButton.pad(5);
+        backButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            }
+        });
 
         table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
-        table.add("Select Level", "big").spaceBottom(100).row();
-        table.add(scrollPane);
-        table.add(playButton).spaceBottom(100).row();
+        table.add("Select Level", "big").colspan(2).center().row();
+        table.add(scrollPane).expandY();
+        table.add(playButton).row();
         table.add(backButton).colspan(2);
         stage.addActor(table);
 

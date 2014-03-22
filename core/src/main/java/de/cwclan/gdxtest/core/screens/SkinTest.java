@@ -57,26 +57,24 @@ public class SkinTest implements Screen {
 
         button2 = new TextButton("wullewullee", skin);
         button2.pad(15);
-        
+
         backButton = new TextButton("back", skin);
         backButton.pad(5);
-        backButton.addListener(new ClickListener(){
+        backButton.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
             }
         });
-        
-        new TextButton.TextButtonStyle()
 
         table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table.add("Testbereich","big").spaceBottom(100).row();
+        table.add("Testbereich", "big").spaceBottom(100).row();
         table.add(button1).spaceBottom(10).row();
         table.add(button2).spaceBottom(10).row();
         table.add(backButton);
-       table.debug();
+        table.debug();
         stage.addActor(table);
 
     }
