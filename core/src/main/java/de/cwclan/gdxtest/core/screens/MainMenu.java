@@ -34,7 +34,7 @@ public class MainMenu implements Screen {
     private Stage stage;
     private Skin skin;
     private Table table;
-    private TextButton exitButton, startButton;
+    private TextButton exitButton, startButton, testButton;
     private Label heading;
     private TweenManager tweenManager;
 
@@ -91,6 +91,17 @@ public class MainMenu implements Screen {
             }
 
         });
+        
+        testButton = new TextButton("test", skin);
+        testButton.pad(5);
+        testButton.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new SkinTest());
+            }
+
+        });
 
         /*
          *setting up the table
@@ -99,6 +110,7 @@ public class MainMenu implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.add(heading).spaceBottom(100).row();
         table.add(startButton).spaceBottom(15).row();
+        table.add(testButton).spaceBottom(15).row();
         table.add(exitButton);
 //        table.debug();
         stage.addActor(table);
@@ -123,9 +135,11 @@ public class MainMenu implements Screen {
         //headings and buttons fade in
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(startButton, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(testButton, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(exitButton, ActorAccessor.ALPHA).target(0))
                 .push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
                 .push(Tween.to(startButton, ActorAccessor.ALPHA, 0.25f).target(1))
+                .push(Tween.to(testButton, ActorAccessor.ALPHA, 0.25f).target(1))
                 .push(Tween.to(exitButton, ActorAccessor.ALPHA, 0.25f).target(1))
                 .end().start(tweenManager);
 
