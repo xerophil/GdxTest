@@ -12,7 +12,7 @@ public class GdxTestDesktop {
                 config.vSyncEnabled = true;
                 config.width=1280;
                 config.height=720;
-                config.title="todo";
+                config.title=GdxTest.TITLE;
                 
 		new LwjglApplication(new GdxTest(), config);
 	}

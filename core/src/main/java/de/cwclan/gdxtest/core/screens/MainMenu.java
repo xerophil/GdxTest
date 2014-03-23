@@ -106,6 +106,17 @@ public class MainMenu implements Screen {
             }
 
         });
+        
+        TextButton settingsButton = new TextButton("Settings", skin, "small");
+        settingsButton.pad(5);
+        settingsButton.addListener(new ClickListener(){
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Settings());
+            }
+           
+        });
 
         /*
          *setting up the table
@@ -114,6 +125,7 @@ public class MainMenu implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.add(heading).spaceBottom(100).row();
         table.add(startButton).spaceBottom(15).row();
+        table.add(settingsButton).spaceBottom(15).row();
         table.add(testButton).spaceBottom(15).row();
         table.add(exitButton);
 //        table.debug();
