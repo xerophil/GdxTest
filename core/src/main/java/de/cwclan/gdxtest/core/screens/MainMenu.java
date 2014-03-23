@@ -5,15 +5,14 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,8 +33,6 @@ public class MainMenu implements Screen {
     private Stage stage;
     private Skin skin;
     private Table table;
-    private TextButton exitButton, startButton, testButton;
-    private Label heading;
     private TweenManager tweenManager;
 
     @Override
@@ -68,20 +65,27 @@ public class MainMenu implements Screen {
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
         
 
-        heading = new Label("Strange Stuff", skin, "big");
+        Label heading = new Label("Strange Stuff", skin, "big");
 
-        exitButton = new TextButton("schluss", skin);
+        TextButton exitButton = new TextButton("schluss", skin);
         exitButton.pad(5);
         exitButton.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                
+                Timeline.createParallel().beginParallel()
+                        .push(Tween.to(table, ActorAccessor.ALPHA, .75f).target(0))
+                        .push(Tween.to(table, ActorAccessor.Y, .75f).target(table.getY()-50))
+                        .setCallback((int type, BaseTween<?> source) -> {
+                            Gdx.app.exit();
+                }).end().start(tweenManager);
+                        
             }
 
         });
 
-        startButton = new TextButton("los", skin);
+        TextButton startButton = new TextButton("los", skin);
         startButton.pad(5);
         startButton.addListener(new ClickListener() {
 
@@ -92,7 +96,7 @@ public class MainMenu implements Screen {
 
         });
         
-        testButton = new TextButton("test", skin);
+        TextButton testButton = new TextButton("test", skin);
         testButton.pad(5);
         testButton.addListener(new ClickListener() {
 

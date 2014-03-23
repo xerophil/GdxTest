@@ -28,10 +28,6 @@ public class LevelMenu implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private List list;
-    private ScrollPane scrollPane;
-    private TextButton playButton;
-    private TextButton backButton;
 
     @Override
     public void render(float delta) {
@@ -48,7 +44,6 @@ public class LevelMenu implements Screen {
     public void resize(int width, int height) {
         stage.setViewport(width, height, true);
         table.invalidateHierarchy();
-        setupTable();
     }
 
     @Override
@@ -58,15 +53,15 @@ public class LevelMenu implements Screen {
 
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
 
-        list = new List(new String[]{"onesadasdasdsadasdasdsadasd", "two", "three", "and", "so", "on","one", "two", "three", "and", "so", "on","one", "two", "three", "and", "so", "on"}, skin);
+        List list = new List(new String[]{"onesadasdasdsadasdasdsadasd", "two", "three", "and", "so", "on", "one", "two", "three", "and", "so", "on", "one", "two", "three", "and", "so", "on"}, skin);
 
-        scrollPane = new ScrollPane(list, skin);
+        ScrollPane scrollPane = new ScrollPane(list, skin);
         scrollPane.setWidth(30);
 
-        playButton = new TextButton("Druf da", skin);
+        TextButton playButton = new TextButton("Druf da", skin);
         playButton.pad(5);
 
-        backButton = new TextButton("zurück", skin, "small");
+        TextButton backButton = new TextButton("zurück", skin, "small");
         backButton.pad(5);
         backButton.addListener(new ClickListener() {
 
@@ -77,21 +72,15 @@ public class LevelMenu implements Screen {
         });
 
         table = new Table(skin);
-        setupTable();
-
-    }
-
-    private void setupTable() {
-        table.clear();
-        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setBounds(0, 0, stage.getWidth(), stage.getHeight());
         table.debug();
-        table.add().width(table.getWidth()/5);
-        table.add("Select Level", "big").colspan(1).center();
-        table.add().width(table.getWidth()/5).row();
-        table.add(scrollPane).colspan(2).left().expandY();
-        table.add(playButton).row();
-        table.add(backButton).colspan(3);
+        table.setFillParent(true);
+        table.add("Select Level", "big").colspan(3).expandX().spaceBottom(50).row();
+        table.add(scrollPane).uniformX().left().expandY();
+        table.add(playButton).uniformX();
+        table.add(backButton).uniformY().bottom().right();
         stage.addActor(table);
+
     }
 
     @Override

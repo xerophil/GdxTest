@@ -41,6 +41,7 @@ public class Splash implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        splash.setSize(width, height);
     }
 
     @Override
@@ -51,7 +52,6 @@ public class Splash implements Screen {
 
         Texture texture = new Texture("img/logo.png");
         splash = new Sprite(texture);
-        splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         Tween.set(splash, SpriteAccessor.ALPHA).target(0).start(tweenManager);
         Tween.to(splash, SpriteAccessor.ALPHA, .5f).target(1).repeatYoyo(1, 1).setCallback((int type, BaseTween<?> source) -> {
