@@ -17,7 +17,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -31,6 +33,9 @@ public class Game implements Screen {
     private OrthographicCamera camera;
     private final float TIMESTEP = 1 / 60f;
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
+    private Body box;
+    private float speed = 500;
+    private Vector2 movement = new Vector2();
 
     @Override
     public void render(float delta) {
@@ -41,12 +46,14 @@ public class Game implements Screen {
         debugRenderer.render(world, camera.combined);
 
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
+
+        box.applyForceToCenter(movement, true);
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth=width/25;
-        camera.viewportHeight=height/25;
+        camera.viewportWidth = width / 25;
+        camera.viewportHeight = height / 25;
         camera.update();
     }
 
@@ -62,14 +69,47 @@ public class Game implements Screen {
             @Override
             public boolean keyDown(int keycode) {
 
-                if (keycode == Keys.ESCAPE) {
-                    ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
+                switch (keycode) {
+                    case Keys.ESCAPE:
+
+                        ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
+                        break;
+                    case Keys.W:
+                        movement.y = speed;
+                        break;
+                    case Keys.A:
+                        movement.x = -speed;
+                        break;
+                    case Keys.S:
+                        movement.y = -speed;
+                        break;
+                    case Keys.D:
+                        movement.x = speed;
+                        break;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                switch (keycode) {
+                    case Keys.W:
+                    case Keys.S:
+                        movement.y = 0;
+                        break;
+                    case Keys.A:
+                    case Keys.D:
+                        movement.x = 0;
+                        break;
                 }
                 return true;
             }
 
         });
 
+        /*
+         * the ball
+         */
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(0, 1);
@@ -87,22 +127,39 @@ public class Game implements Screen {
         ball.createFixture(fixtureDef);
 
         ballShape.dispose();
-        
-        
-        ChainShape groundShape= new ChainShape();
-        groundShape.createChain(new Vector2[] {new Vector2(-50, -10), new Vector2(50, -10)});
-        
-        bodyDef.type=BodyDef.BodyType.StaticBody;
+
+        /*
+         * the ground
+         */
+        ChainShape groundShape = new ChainShape();
+        groundShape.createChain(new Vector2[]{new Vector2(-50, -10), new Vector2(50, -10)});
+
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
-        fixtureDef.friction=.5f;
-        fixtureDef.restitution=0;
-        fixtureDef.shape=groundShape;
-        
-        
+        fixtureDef.friction = .5f;
+        fixtureDef.restitution = 0;
+        fixtureDef.shape = groundShape;
+
         world.createBody(bodyDef).createFixture(fixtureDef);
-        
+
         groundShape.dispose();
-        
+
+        /*
+         * the box
+         */
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(2.25f, 10);
+
+        PolygonShape boxShape = new PolygonShape();
+        boxShape.setAsBox(.5f, 1);
+
+        fixtureDef.shape = boxShape;
+        fixtureDef.friction = .75f;
+        fixtureDef.restitution = .1f;
+        fixtureDef.density = 5;
+
+        box = world.createBody(bodyDef);
+        box.createFixture(fixtureDef);
 
     }
 
