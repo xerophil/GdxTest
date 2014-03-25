@@ -43,18 +43,18 @@ public class Game implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        debugRenderer.render(world, camera.combined);
-
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-
         box.applyForceToCenter(movement, true);
+        camera.position.set(box.getPosition().x, box.getPosition().y, 0);
+        camera.update();
+
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width / 25;
         camera.viewportHeight = height / 25;
-        camera.update();
     }
 
     @Override
@@ -105,6 +105,13 @@ public class Game implements Screen {
                 return true;
             }
 
+            @Override
+            public boolean scrolled(int amount) {
+                camera.zoom+=amount/25f;
+                return true;
+            }
+
+            
         });
 
         /*
