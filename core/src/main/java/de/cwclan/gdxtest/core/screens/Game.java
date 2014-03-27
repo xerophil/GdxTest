@@ -9,6 +9,7 @@ import de.cwclan.gdxtest.core.entities.Car;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -47,7 +48,7 @@ public class Game implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-//        camera.position.set(ufo.getPosition().x, ufo.getPosition().y, 0);
+        camera.position.set(car.getChassis().getPosition().x, car.getChassis().getPosition().y, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -79,29 +80,6 @@ public class Game implements Screen {
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / 25, Gdx.graphics.getHeight() / 25);
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-
-            @Override
-            public boolean keyDown(int keycode) {
-
-                switch (keycode) {
-                    case Keys.ESCAPE:
-
-                        ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
-                        break;
-
-                }
-                return true;
-            }
-
-            @Override
-            public boolean scrolled(int amount) {
-                camera.zoom += amount / 25f;
-                return true;
-            }
-
-        });
-
         BodyDef bodyDef = new BodyDef();
         FixtureDef fixtureDef = new FixtureDef();
         FixtureDef wheelFixtureDef = new FixtureDef();
@@ -110,11 +88,33 @@ public class Game implements Screen {
         fixtureDef.density = 5;
         fixtureDef.friction = .4f;
         fixtureDef.restitution = .3f;
-        
-        wheelFixtureDef.density = fixtureDef.density - .5f;
-        wheelFixtureDef.friction = 1;
+
+        wheelFixtureDef.density = fixtureDef.density * 1.5f;
+        wheelFixtureDef.friction = 50;
         wheelFixtureDef.restitution = .4f;
         car = new Car(world, fixtureDef, wheelFixtureDef, 0, 3, 3, 1.5f);
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
+
+            @Override
+            public boolean keyDown(int keycode) {
+
+                switch (keycode) {
+                    case Keys.ESCAPE:
+                        ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
+                        break;
+
+                }
+                return false;
+            }
+
+            @Override
+            public boolean scrolled(int amount) {
+                camera.zoom += amount / 25f;
+                return true;
+            }
+
+        }, car));
 
         /*
          * the ground
