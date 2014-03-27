@@ -5,6 +5,7 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import com.badlogic.gdx.Application;
 import de.cwclan.gdxtest.core.entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -47,8 +49,9 @@ public class Game implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        player.update();
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-        camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
+        camera.position.y = Math.max(player.getBody().getPosition().y, camera.position.y);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -74,6 +77,11 @@ public class Game implements Screen {
 
     @Override
     public void show() {
+
+        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            Gdx.graphics.setDisplayMode((int) (Gdx.graphics.getHeight() / 1.5), Gdx.graphics.getHeight(), false);
+        }
+
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
         batch = new SpriteBatch();
@@ -120,7 +128,20 @@ public class Game implements Screen {
          * the ground
          */
         ChainShape groundShape = new ChainShape();
-        groundShape.createChain(new Vector2[]{new Vector2(-50, 0), new Vector2(50, 0)});
+        Vector3 upLeft = new Vector3(0, -Gdx.graphics.getHeight(), 0),
+                upRight = new Vector3(Gdx.graphics.getWidth(), upLeft.y, 0),
+                botLeft = new Vector3(0, Gdx.graphics.getHeight(), 0),
+                botRight = new Vector3(Gdx.graphics.getWidth(), botLeft.y, 0);
+        camera.unproject(upLeft);
+        camera.unproject(upRight);
+        camera.unproject(botLeft);
+        camera.unproject(botRight);
+
+        groundShape.createChain(new float[]{
+            upLeft.x, upLeft.y,
+            botLeft.x, botLeft.y,
+            botRight.x, botRight.y,
+            upRight.x, upRight.y});
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);

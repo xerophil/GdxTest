@@ -10,13 +10,10 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
-import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
 
 /**
  *
@@ -38,6 +35,7 @@ public class Player extends InputAdapter {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
+        bodyDef.fixedRotation=true;
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2, height / 2);
