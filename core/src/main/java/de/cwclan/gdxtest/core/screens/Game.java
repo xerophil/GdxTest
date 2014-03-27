@@ -5,6 +5,7 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import de.cwclan.gdxtest.core.entities.Car;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -36,6 +37,7 @@ public class Game implements Screen {
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
     private SpriteBatch batch;
 
+    private Car car;
     private final Array<Body> tmpBodies = new Array<>();
 
     @Override
@@ -87,6 +89,7 @@ public class Game implements Screen {
 
                         ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
                         break;
+
                 }
                 return true;
             }
@@ -101,6 +104,17 @@ public class Game implements Screen {
 
         BodyDef bodyDef = new BodyDef();
         FixtureDef fixtureDef = new FixtureDef();
+        FixtureDef wheelFixtureDef = new FixtureDef();
+
+        //car
+        fixtureDef.density = 5;
+        fixtureDef.friction = .4f;
+        fixtureDef.restitution = .3f;
+        
+        wheelFixtureDef.density = fixtureDef.density - .5f;
+        wheelFixtureDef.friction = 1;
+        wheelFixtureDef.restitution = .4f;
+        car = new Car(world, fixtureDef, wheelFixtureDef, 0, 3, 3, 1.5f);
 
         /*
          * the ground
