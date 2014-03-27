@@ -11,16 +11,20 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
@@ -36,6 +40,10 @@ public class Game implements Screen {
     private Body box;
     private float speed = 500;
     private Vector2 movement = new Vector2();
+    private Sprite boxSprite;
+    private SpriteBatch batch;
+
+    private final Array<Body> tmpBodies = new Array<>();
 
     @Override
     public void render(float delta) {
@@ -48,6 +56,18 @@ public class Game implements Screen {
         camera.position.set(box.getPosition().x, box.getPosition().y, 0);
         camera.update();
 
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        world.getBodies(tmpBodies);
+        for (Body body : tmpBodies) {
+            if (body.getUserData() != null && body.getUserData() instanceof Sprite) {
+                Sprite sprite = (Sprite) body.getUserData();
+                sprite.setPosition(body.getPosition().x -sprite.getWidth()/2, body.getPosition().y - sprite.getHeight()/2);
+                sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+                sprite.draw(batch);
+            }
+        }
+        batch.end();
         debugRenderer.render(world, camera.combined);
     }
 
@@ -61,6 +81,7 @@ public class Game implements Screen {
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
         debugRenderer = new Box2DDebugRenderer();
+        batch = new SpriteBatch();
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / 25, Gdx.graphics.getHeight() / 25);
 
@@ -107,24 +128,23 @@ public class Game implements Screen {
 
             @Override
             public boolean scrolled(int amount) {
-                camera.zoom+=amount/25f;
+                camera.zoom += amount / 25f;
                 return true;
             }
 
-            
         });
 
+        BodyDef bodyDef = new BodyDef();
+        FixtureDef fixtureDef = new FixtureDef();
         /*
          * the ball
          */
-        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(0, 1);
 
         CircleShape ballShape = new CircleShape();
         ballShape.setRadius(0.5f);
 
-        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = ballShape;
         fixtureDef.density = 2.5f;
         fixtureDef.friction = .25f;
@@ -134,6 +154,34 @@ public class Game implements Screen {
         ball.createFixture(fixtureDef);
 
         ballShape.dispose();
+
+
+        /*
+         * the box
+         */
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(2.25f, 10);
+
+        PolygonShape boxShape = new PolygonShape();
+        boxShape.setAsBox( 1, 0.5f);
+
+        fixtureDef.shape = boxShape;
+        fixtureDef.friction = .75f;
+        fixtureDef.restitution = .1f;
+        fixtureDef.density = 5;
+
+       
+
+        box = world.createBody(bodyDef);
+        box.createFixture(fixtureDef);
+        
+         boxSprite = new Sprite(new Texture("img/ufo.png"));
+         boxSprite.setSize(2, 1);
+         boxSprite.setOrigin(boxSprite.getWidth()/2, boxSprite.getHeight()/2);
+        box.setUserData(boxSprite);
+        
+        boxShape.dispose();
+        
 
         /*
          * the ground
@@ -150,24 +198,6 @@ public class Game implements Screen {
         world.createBody(bodyDef).createFixture(fixtureDef);
 
         groundShape.dispose();
-
-        /*
-         * the box
-         */
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(2.25f, 10);
-
-        PolygonShape boxShape = new PolygonShape();
-        boxShape.setAsBox(.5f, 1);
-
-        fixtureDef.shape = boxShape;
-        fixtureDef.friction = .75f;
-        fixtureDef.restitution = .1f;
-        fixtureDef.density = 5;
-
-        box = world.createBody(bodyDef);
-        box.createFixture(fixtureDef);
-
     }
 
     @Override
@@ -187,6 +217,7 @@ public class Game implements Screen {
     public void dispose() {
         world.dispose();
         debugRenderer.dispose();
+        boxSprite.getTexture().dispose();
     }
 
 }
