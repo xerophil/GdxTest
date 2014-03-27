@@ -113,26 +113,31 @@ public class Game implements Screen {
                 camera.zoom += amount / 25f;
                 return true;
             }
-
         }, car));
 
         /*
          * the ground
          */
         ChainShape groundShape = new ChainShape();
-        groundShape.createChain(new Vector2[]{new Vector2(-50, 0), new Vector2(50, 0)});
+        groundShape.createChain(new Vector2[]{new Vector2(-50, 10), new Vector2(-49, 0), new Vector2(-40, 0), new Vector2(-30, -1), new Vector2(-20, 0), new Vector2(-10, -1), new Vector2(0, 1), new Vector2(10, 2), new Vector2(20, 0), new Vector2(30, -1), new Vector2(40, -2), new Vector2(50, 0)});
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
         fixtureDef.friction = .5f;
         fixtureDef.restitution = 0;
         fixtureDef.shape = groundShape;
-
-        Body ground
-                = world.createBody(bodyDef);
-        ground.createFixture(fixtureDef);
-
+        world.createBody(bodyDef).createFixture(fixtureDef);
         groundShape.dispose();
+
+        /*
+         * another ground 
+         */
+        
+        groundShape = new ChainShape();
+        groundShape.createChain(new Vector2[]{new Vector2(40, -5), new Vector2(50, -3), new Vector2(60, 0), new Vector2(70, -1), new Vector2(80, 3), new Vector2(90, -1), new Vector2(100, 1), new Vector2(110, 2), new Vector2(120, 0), new Vector2(130, -1), new Vector2(140, -2), new Vector2(150, 0)});
+        world.createBody(bodyDef).createFixture(fixtureDef);
+        groundShape.dispose();
+
 
     }
     private Body ball;
