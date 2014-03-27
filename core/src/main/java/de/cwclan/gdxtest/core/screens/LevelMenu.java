@@ -67,7 +67,7 @@ public class LevelMenu implements Screen {
 
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new de.cwclan.gdxtest.core.screens.Game());
             }
-            
+
         });
 
         TextButton backButton = new TextButton("zurück", skin, "small");
@@ -81,7 +81,7 @@ public class LevelMenu implements Screen {
         });
 
         table = new Table(skin);
-        table.setBounds(0, 0, stage.getWidth(), stage.getHeight());
+        table.setFillParent(true);
         table.debug();
         table.setFillParent(true);
         table.add("Select Level", "big").colspan(3).expandX().spaceBottom(50).row();
