@@ -40,19 +40,16 @@ public class MainMenu implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         stage.act(delta);
         stage.draw();
 
         tweenManager.update(delta);
-//        Table.drawDebug(stage);
     }
 
     @Override
     public void resize(int width, int height) {
         stage.setViewport(width, height, true);
         table.invalidateHierarchy();
-        table.setSize(width, height);
     }
 
     @Override
@@ -61,9 +58,7 @@ public class MainMenu implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
-        
 
         Label heading = new Label("Strange Stuff", skin, "big");
 
@@ -73,14 +68,14 @@ public class MainMenu implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                
+
                 Timeline.createParallel().beginParallel()
                         .push(Tween.to(table, ActorAccessor.ALPHA, .75f).target(0))
-                        .push(Tween.to(table, ActorAccessor.Y, .75f).target(table.getY()-50))
+                        .push(Tween.to(table, ActorAccessor.Y, .75f).target(table.getY() - 50))
                         .setCallback((int type, BaseTween<?> source) -> {
                             Gdx.app.exit();
-                }).end().start(tweenManager);
-                        
+                        }).end().start(tweenManager);
+
             }
 
         });
@@ -95,7 +90,7 @@ public class MainMenu implements Screen {
             }
 
         });
-        
+
         TextButton testButton = new TextButton("test", skin);
         testButton.pad(5);
         testButton.addListener(new ClickListener() {
@@ -106,23 +101,23 @@ public class MainMenu implements Screen {
             }
 
         });
-        
+
         TextButton settingsButton = new TextButton("Settings", skin, "small");
         settingsButton.pad(5);
-        settingsButton.addListener(new ClickListener(){
+        settingsButton.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Settings());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Settings());
             }
-           
+
         });
 
         /*
          *setting up the table
          */
         table = new Table(skin);
-        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setFillParent(true);
         table.add(heading).spaceBottom(100).row();
         table.add(startButton).spaceBottom(15).row();
         table.add(settingsButton).spaceBottom(15).row();
