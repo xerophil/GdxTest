@@ -60,7 +60,7 @@ public class Car extends InputAdapter {
         axisDef.localAnchorA.set(-width / 2 * .75f + wheelShape.getRadius(), -height / 2 * 1.25f);
         axisDef.frequencyHz = chassisFixtureDef.density;
         axisDef.localAxisA.set(Vector2.Y);
-        axisDef.maxMotorTorque=chassisFixtureDef.density*10;
+        axisDef.maxMotorTorque = chassisFixtureDef.density * 10;
 
         leftAxis = (WheelJoint) world.createJoint(axisDef);
 
@@ -75,6 +75,17 @@ public class Car extends InputAdapter {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Keys.W:
+            case Keys.S:
+                leftAxis.enableMotor(false);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Keys.W:
                 leftAxis.enableMotor(true);
                 leftAxis.setMotorSpeed(-motorSpeed);
                 break;
@@ -85,17 +96,7 @@ public class Car extends InputAdapter {
                 break;
         }
         return true;
-    }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case Keys.W:
-            case Keys.S:
-                leftAxis.enableMotor(false);
-                break;
-        }
-        return true;
     }
 
     public Body getChassis() {
