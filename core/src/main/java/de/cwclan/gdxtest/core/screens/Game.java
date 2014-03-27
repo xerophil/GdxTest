@@ -5,13 +5,13 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import de.cwclan.gdxtest.core.entities.Car;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -20,13 +20,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -40,12 +35,9 @@ public class Game implements Screen {
     private OrthographicCamera camera;
     private final float TIMESTEP = 1 / 60f;
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
-    private Body ufo;
-    private float speed = 500;
-    private Vector2 movement = new Vector2();
-    private Sprite ufoSprite;
     private SpriteBatch batch;
 
+    private Car car;
     private final Array<Body> tmpBodies = new Array<>();
 
     @Override
@@ -55,8 +47,7 @@ public class Game implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-        ufo.applyForceToCenter(movement, true);
-        camera.position.set(ufo.getPosition().x, ufo.getPosition().y, 0);
+//        camera.position.set(ufo.getPosition().x, ufo.getPosition().y, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -98,33 +89,7 @@ public class Game implements Screen {
 
                         ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new LevelMenu());
                         break;
-                    case Keys.W:
-                        movement.y = speed;
-                        break;
-                    case Keys.A:
-                        movement.x = -speed;
-                        break;
-                    case Keys.S:
-                        movement.y = -speed;
-                        break;
-                    case Keys.D:
-                        movement.x = speed;
-                        break;
-                }
-                return true;
-            }
 
-            @Override
-            public boolean keyUp(int keycode) {
-                switch (keycode) {
-                    case Keys.W:
-                    case Keys.S:
-                        movement.y = 0;
-                        break;
-                    case Keys.A:
-                    case Keys.D:
-                        movement.x = 0;
-                        break;
                 }
                 return true;
             }
@@ -139,50 +104,17 @@ public class Game implements Screen {
 
         BodyDef bodyDef = new BodyDef();
         FixtureDef fixtureDef = new FixtureDef();
-        /*
-         * the ball
-         */
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0, 1);
+        FixtureDef wheelFixtureDef = new FixtureDef();
 
-        CircleShape ballShape = new CircleShape();
-        ballShape.setRadius(0.5f);
-
-        fixtureDef.shape = ballShape;
-        fixtureDef.density = 2.5f;
-        fixtureDef.friction = .25f;
-        fixtureDef.restitution = .75f;
-
-        ball = world.createBody(bodyDef);
-        ball.createFixture(fixtureDef);
-
-        ballShape.dispose();
-
-
-        /*
-         * the box
-         */
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(2.25f, 10);
-
-        PolygonShape ufoShape = new PolygonShape();
-        ufoShape.setAsBox(1, 0.5f);
-
-        fixtureDef.shape = ufoShape;
-        fixtureDef.friction = .75f;
-        fixtureDef.restitution = .1f;
+        //car
         fixtureDef.density = 5;
-
-        ufo = world.createBody(bodyDef);
-        ufo.createFixture(fixtureDef);
-
-        ufoSprite = new Sprite(new Texture("img/ufo.png"));
-        ufoSprite.setSize(2, 1);
-        ufoSprite.setOrigin(ufoSprite.getWidth() / 2, ufoSprite.getHeight() / 2);
-        ufo.setUserData(ufoSprite);
-
-        ufoShape.dispose();
-
+        fixtureDef.friction = .4f;
+        fixtureDef.restitution = .3f;
+        
+        wheelFixtureDef.density = fixtureDef.density - .5f;
+        wheelFixtureDef.friction = 1;
+        wheelFixtureDef.restitution = .4f;
+        car = new Car(world, fixtureDef, wheelFixtureDef, 0, 3, 3, 1.5f);
 
         /*
          * the ground
@@ -201,20 +133,6 @@ public class Game implements Screen {
         ground.createFixture(fixtureDef);
 
         groundShape.dispose();
-
-        /*
-         * create a connection
-         */
-
-        //rope joint
-        RopeJointDef rdf = new RopeJointDef();
-        rdf.bodyA = ufo;
-        rdf.bodyB = ball;
-        rdf.maxLength=5;
-        rdf.localAnchorA.set(0, 0);
-        rdf.localAnchorB.set(0, 0);
-        
-        world.createJoint(rdf);
 
     }
     private Body ball;
@@ -236,7 +154,6 @@ public class Game implements Screen {
     public void dispose() {
         world.dispose();
         debugRenderer.dispose();
-        ufoSprite.getTexture().dispose();
     }
 
 }
