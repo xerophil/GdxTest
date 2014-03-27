@@ -5,7 +5,7 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
-import de.cwclan.gdxtest.core.entities.Car;
+import de.cwclan.gdxtest.core.entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -38,7 +38,7 @@ public class Game implements Screen {
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
     private SpriteBatch batch;
 
-    private Car car;
+    private Player player;
     private final Array<Body> tmpBodies = new Array<>();
 
     @Override
@@ -48,7 +48,7 @@ public class Game implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-        camera.position.set(car.getChassis().getPosition().x, car.getChassis().getPosition().y, 0);
+        camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -92,7 +92,7 @@ public class Game implements Screen {
         wheelFixtureDef.density = fixtureDef.density * 1.5f;
         wheelFixtureDef.friction = 50;
         wheelFixtureDef.restitution = .4f;
-        car = new Car(world, fixtureDef, wheelFixtureDef, 0, 3, 3, 1.5f);
+        player = new Player(world, 0, 5, 1);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
 
@@ -114,7 +114,7 @@ public class Game implements Screen {
                 return true;
             }
 
-        }, car));
+        }, player));
 
         /*
          * the ground
