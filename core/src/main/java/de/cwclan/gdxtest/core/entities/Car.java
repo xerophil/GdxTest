@@ -26,7 +26,7 @@ public class Car extends InputAdapter {
     private Body chassis, leftWheel, rightWheel;
     private WheelJoint leftAxis, rightAxis;
     private World world;
-    private float motorSpeed = 75;
+    private float motorSpeed = 70;
 
     public Car(World world, FixtureDef chassisFixtureDef, FixtureDef wheelFixtureDef, float x, float y, float width, float height) {
         this.world = world;
@@ -85,15 +85,16 @@ public class Car extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Keys.W:
+            case Keys.D:
+            case Keys.UP:
                 leftAxis.enableMotor(true);
                 leftAxis.setMotorSpeed(-motorSpeed);
                 break;
-            case Keys.S:
+            case Keys.A:
+            case Keys.DOWN:
                 leftAxis.enableMotor(true);
                 leftAxis.setMotorSpeed(motorSpeed);
-
-                break;
+                break;            
         }
         return true;
 
