@@ -24,6 +24,9 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -37,10 +40,10 @@ public class Game implements Screen {
     private OrthographicCamera camera;
     private final float TIMESTEP = 1 / 60f;
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
-    private Body box;
+    private Body ufo;
     private float speed = 500;
     private Vector2 movement = new Vector2();
-    private Sprite boxSprite;
+    private Sprite ufoSprite;
     private SpriteBatch batch;
 
     private final Array<Body> tmpBodies = new Array<>();
@@ -52,8 +55,8 @@ public class Game implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
-        box.applyForceToCenter(movement, true);
-        camera.position.set(box.getPosition().x, box.getPosition().y, 0);
+        ufo.applyForceToCenter(movement, true);
+        camera.position.set(ufo.getPosition().x, ufo.getPosition().y, 0);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -62,7 +65,7 @@ public class Game implements Screen {
         for (Body body : tmpBodies) {
             if (body.getUserData() != null && body.getUserData() instanceof Sprite) {
                 Sprite sprite = (Sprite) body.getUserData();
-                sprite.setPosition(body.getPosition().x -sprite.getWidth()/2, body.getPosition().y - sprite.getHeight()/2);
+                sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
                 sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
                 sprite.draw(batch);
             }
@@ -150,7 +153,7 @@ public class Game implements Screen {
         fixtureDef.friction = .25f;
         fixtureDef.restitution = .75f;
 
-        Body ball = world.createBody(bodyDef);
+        ball = world.createBody(bodyDef);
         ball.createFixture(fixtureDef);
 
         ballShape.dispose();
@@ -162,32 +165,30 @@ public class Game implements Screen {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(2.25f, 10);
 
-        PolygonShape boxShape = new PolygonShape();
-        boxShape.setAsBox( 1, 0.5f);
+        PolygonShape ufoShape = new PolygonShape();
+        ufoShape.setAsBox(1, 0.5f);
 
-        fixtureDef.shape = boxShape;
+        fixtureDef.shape = ufoShape;
         fixtureDef.friction = .75f;
         fixtureDef.restitution = .1f;
         fixtureDef.density = 5;
 
-       
+        ufo = world.createBody(bodyDef);
+        ufo.createFixture(fixtureDef);
 
-        box = world.createBody(bodyDef);
-        box.createFixture(fixtureDef);
-        
-         boxSprite = new Sprite(new Texture("img/ufo.png"));
-         boxSprite.setSize(2, 1);
-         boxSprite.setOrigin(boxSprite.getWidth()/2, boxSprite.getHeight()/2);
-        box.setUserData(boxSprite);
-        
-        boxShape.dispose();
-        
+        ufoSprite = new Sprite(new Texture("img/ufo.png"));
+        ufoSprite.setSize(2, 1);
+        ufoSprite.setOrigin(ufoSprite.getWidth() / 2, ufoSprite.getHeight() / 2);
+        ufo.setUserData(ufoSprite);
+
+        ufoShape.dispose();
+
 
         /*
          * the ground
          */
         ChainShape groundShape = new ChainShape();
-        groundShape.createChain(new Vector2[]{new Vector2(-50, -10), new Vector2(50, -10)});
+        groundShape.createChain(new Vector2[]{new Vector2(-50, 0), new Vector2(50, 0)});
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
@@ -195,10 +196,28 @@ public class Game implements Screen {
         fixtureDef.restitution = 0;
         fixtureDef.shape = groundShape;
 
-        world.createBody(bodyDef).createFixture(fixtureDef);
+        Body ground
+                = world.createBody(bodyDef);
+        ground.createFixture(fixtureDef);
 
         groundShape.dispose();
+
+        /*
+         * create a connection
+         */
+
+        //rope joint
+        RopeJointDef rdf = new RopeJointDef();
+        rdf.bodyA = ufo;
+        rdf.bodyB = ball;
+        rdf.maxLength=5;
+        rdf.localAnchorA.set(0, 0);
+        rdf.localAnchorB.set(0, 0);
+        
+        world.createJoint(rdf);
+
     }
+    private Body ball;
 
     @Override
     public void hide() {
@@ -217,7 +236,7 @@ public class Game implements Screen {
     public void dispose() {
         world.dispose();
         debugRenderer.dispose();
-        boxSprite.getTexture().dispose();
+        ufoSprite.getTexture().dispose();
     }
 
 }
