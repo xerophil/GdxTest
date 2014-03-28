@@ -39,6 +39,9 @@ public class Game implements Screen {
     private final float TIMESTEP = 1 / 60f;
     private final int VELOCITYITERATION = 8, POSITIONITERATION = 3;
     private SpriteBatch batch;
+    private Vector3 buttomRight;
+    private Vector3 buttomLeft;
+    private Body ball;
 
     private Player player;
     private final Array<Body> tmpBodies = new Array<>();
@@ -48,6 +51,12 @@ public class Game implements Screen {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (player.getBody().getPosition().x < buttomLeft.x) {
+            player.getBody().setTransform(buttomRight.x, player.getBody().getPosition().y, player.getBody().getAngle());
+        } else if (player.getBody().getPosition().x > buttomRight.x) {
+            player.getBody().setTransform(buttomLeft.x, player.getBody().getPosition().y, player.getBody().getAngle());
+        }
 
         player.update();
         world.step(TIMESTEP, VELOCITYITERATION, POSITIONITERATION);
@@ -100,7 +109,9 @@ public class Game implements Screen {
         wheelFixtureDef.density = fixtureDef.density * 1.5f;
         wheelFixtureDef.friction = 50;
         wheelFixtureDef.restitution = .4f;
-        player = new Player(world, 0, 5, 1);
+        player = new Player(world, 0, 1, 1);
+        world.setContactFilter(player);
+        world.setContactListener(player);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
 
@@ -128,20 +139,14 @@ public class Game implements Screen {
          * the ground
          */
         ChainShape groundShape = new ChainShape();
-        Vector3 upLeft = new Vector3(0, -Gdx.graphics.getHeight(), 0),
-                upRight = new Vector3(Gdx.graphics.getWidth(), upLeft.y, 0),
-                botLeft = new Vector3(0, Gdx.graphics.getHeight(), 0),
-                botRight = new Vector3(Gdx.graphics.getWidth(), botLeft.y, 0);
-        camera.unproject(upLeft);
-        camera.unproject(upRight);
-        camera.unproject(botLeft);
-        camera.unproject(botRight);
+        buttomLeft = new Vector3(0, Gdx.graphics.getHeight(), 0);
+        buttomRight = new Vector3(Gdx.graphics.getWidth(), buttomLeft.y, 0);
+        camera.unproject(buttomLeft);
+        camera.unproject(buttomRight);
 
         groundShape.createChain(new float[]{
-            upLeft.x, upLeft.y,
-            botLeft.x, botLeft.y,
-            botRight.x, botRight.y,
-            upRight.x, upRight.y});
+            buttomLeft.x, buttomLeft.y,
+            buttomRight.x, buttomRight.y});
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
@@ -155,8 +160,11 @@ public class Game implements Screen {
 
         groundShape.dispose();
 
+        //a test platform
+        groundShape = new ChainShape();
+        groundShape.createChain(new float[]{buttomRight.x / 10, 3, buttomRight.x / 4, 3});
+        world.createBody(bodyDef).createFixture(fixtureDef);
     }
-    private Body ball;
 
     @Override
     public void hide() {
