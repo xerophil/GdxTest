@@ -28,15 +28,15 @@ public class Player extends InputAdapter implements ContactFilter, ContactListen
 
     private final Body body;
     private final Fixture fixture;
-    public final float width, height;
+    public final float WIDTH, HEIGHT;
     private final Vector2 velocity = new Vector2();
     private final float movementForce, jumpPower;
 
     public Player(World world, float x, float y, float width) {
         this.jumpPower = 45;
         this.movementForce = 500;
-        this.width = width;
-        height = width * 2;
+        this.WIDTH = width;
+        HEIGHT = width * 2;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -44,7 +44,7 @@ public class Player extends InputAdapter implements ContactFilter, ContactListen
         bodyDef.fixedRotation = true;
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2);
+        shape.setAsBox(width / 2, HEIGHT / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -82,6 +82,9 @@ public class Player extends InputAdapter implements ContactFilter, ContactListen
                 break;
             case Keys.D:
                 velocity.x = movementForce;
+                break;
+            case Keys.SPACE:
+                body.applyLinearImpulse(0, jumpPower, body.getWorldCenter().x, body.getWorldCenter().y, true);
                 break;
             default:
                 return false;

@@ -26,6 +26,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import de.cwclan.gdxtest.core.LevelGenerator;
 
 /**
  *
@@ -43,6 +44,7 @@ public class Game implements Screen {
     private Vector3 buttomLeft;
     private Body ball;
 
+    private LevelGenerator levelGenerator;
     private Player player;
     private final Array<Body> tmpBodies = new Array<>();
 
@@ -76,6 +78,8 @@ public class Game implements Screen {
         }
         batch.end();
         debugRenderer.render(world, camera.combined);
+        levelGenerator.generate(camera.position.y+camera.viewportHeight /2);
+        
     }
 
     @Override
@@ -160,10 +164,17 @@ public class Game implements Screen {
 
         groundShape.dispose();
 
-        //a test platform
-        groundShape = new ChainShape();
-        groundShape.createChain(new float[]{buttomRight.x / 10, 3, buttomRight.x / 4, 3});
-        world.createBody(bodyDef).createFixture(fixtureDef);
+//        //a test platform
+//        groundShape = new ChainShape();
+//        groundShape.createChain(new float[]{buttomRight.x / 10, 3, buttomRight.x / 4, 3});
+//        world.createBody(bodyDef).createFixture(fixtureDef);
+//        
+        levelGenerator = new LevelGenerator(ground,
+                buttomLeft.x, buttomRight.x,
+                player.HEIGHT / 2, player.HEIGHT * 3, 
+                player.WIDTH * 1.5f, player.WIDTH * 4f, 
+                player.WIDTH / 3, 0);//10*MathUtils.degRad);
+        
     }
 
     @Override
