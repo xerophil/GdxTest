@@ -129,7 +129,9 @@ public class Player extends InputAdapter implements ContactFilter, ContactListen
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
         if (contact.getFixtureA() == fixture || contact.getFixtureB() == fixture) {
-            body.applyLinearImpulse(0, jumpPower, body.getWorldCenter().x, body.getWorldCenter().y, true);
+            if (contact.getWorldManifold().getPoints()[0].y <= body.getPosition().y - HEIGHT / 2) {
+                body.applyLinearImpulse(0, jumpPower, body.getWorldCenter().x, body.getWorldCenter().y, true);
+            }
         }
     }
 
