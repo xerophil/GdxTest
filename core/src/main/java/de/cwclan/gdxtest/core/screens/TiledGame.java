@@ -5,10 +5,13 @@
  */
 package de.cwclan.gdxtest.core.screens;
 
+import de.cwclan.gdxtest.core.entities.MapPlayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -23,20 +26,27 @@ public class TiledGame implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
 
+    private MapPlayer player;
+
     @Override
     public void render(float delta) {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         
         renderer.setView(camera);
         renderer.render();
+
+        renderer.getSpriteBatch().begin();
+        player.draw(renderer.getSpriteBatch());
+        renderer.getSpriteBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth=width;
-        camera.viewportHeight=height;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
         camera.update();
     }
 
@@ -45,7 +55,8 @@ public class TiledGame implements Screen {
         map = new TmxMapLoader().load("maps/map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
-        
+        player = new MapPlayer(new Sprite(new Texture("img/player.png")));
+
     }
 
     @Override
@@ -67,7 +78,7 @@ public class TiledGame implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
-
+        player.getTexture().dispose();
     }
 
 }
