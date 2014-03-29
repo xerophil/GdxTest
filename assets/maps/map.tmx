@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="minecraft" tilewidth="32" tileheight="32">
+  <image source="terrain.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Kachelebene 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2VGOgjAUQFF0C65gmCVMwv6XNj+SEKME9JX3sOfjfJK0vSkVexmG4QLQketC9ljQo4rriuyx9WatRasu01323Ctaa/B7F9llGvTY22Rs0GNakT3/I22Zd+v9sdaitzZb57rcG+PwvE/rFt/eY+9cnzUYg8egx2c9Is5xPd7r8azNnx5Neux9dm4x9ziqSfaaHdUku8eWJtlrVb3HkWd79jod3ePd86PVt3mPLaJ6LL9Hoptkr89Zejw2ifxfsdcWjz0qvLN6F91Dk9ge9ki+qB7zuZ49n2/gnVVLdA9dYnrsfS7jfr0He3qsrXvkXVWvou5A7I+aPX7u9MjvMb+v9KjVw/vq8xZ7fl85O2r12Nole35nE3HfoEebFp/eOWhRqwexXbLHAQAAAAAAcEa3heyxoEclt0GPSvSoR49a7JFa9KjjsYUeevC6hR56oEdFWtRhb9SiRS1a1GFv1KJFPToAAAAAAAAAAAAAAFn+AQHpW0k=
+  </data>
+ </layer>
+</map>

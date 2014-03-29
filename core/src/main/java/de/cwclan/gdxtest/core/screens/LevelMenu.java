@@ -65,7 +65,7 @@ public class LevelMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new de.cwclan.gdxtest.core.screens.Game());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new de.cwclan.gdxtest.core.screens.TiledGame());
             }
 
         });
