@@ -55,7 +55,7 @@ public class LevelMenu implements Screen {
 
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
 
-        List list = new List(new String[]{"de.cwclan.gdxtest.core.games.CarGame"}, skin);
+        List list = new List(new String[]{"de.cwclan.gdxtest.core.games.CarGame", "de.cwclan.gdxtest.core.games.JumperGame"}, skin);
         list.setSelectedIndex(0);
         ScrollPane scrollPane = new ScrollPane(list, skin);
         scrollPane.setWidth(30);
