@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.cwclan.gdxtest.core.screens;
+package de.cwclan.gdxtest.core.games;
 
 import de.cwclan.gdxtest.core.entities.Car;
 import com.badlogic.gdx.Gdx;
@@ -24,12 +24,13 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import de.cwclan.gdxtest.core.screens.LevelMenu;
 
 /**
  *
  * @author simon
  */
-public class Game implements Screen {
+public class CarGame implements Screen {
 
     private World world;
     private Box2DDebugRenderer debugRenderer;
