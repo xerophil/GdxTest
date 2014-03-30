@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.cwclan.gdxtest.core.screens;
+package de.cwclan.gdxtest.core.games;
 
 import de.cwclan.gdxtest.core.entities.MapPlayer;
 import com.badlogic.gdx.Gdx;

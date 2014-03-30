@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,8 +55,11 @@ public class LevelMenu implements Screen {
 
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/atlas.pack"));
 
-        List list = new List(new String[]{"onesadasdasdsadasdasdsadasd", "two", "three", "and", "so", "on", "one", "two", "three", "and", "so", "on", "one", "two", "three", "and", "so", "on"}, skin);
-
+        List list = new List(new String[]{
+            "de.cwclan.gdxtest.core.games.CarGame",
+            "de.cwclan.gdxtest.core.games.JumperGame",
+            "de.cwclan.gdxtest.core.games.TiledGame"}, skin);
+        list.setSelectedIndex(0);
         ScrollPane scrollPane = new ScrollPane(list, skin);
         scrollPane.setWidth(30);
 
@@ -65,7 +70,14 @@ public class LevelMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new de.cwclan.gdxtest.core.screens.TiledGame());
+                try {
+                    Class<? extends Screen> clazz = (Class<? extends Screen>) Class.forName(list.getSelection());
+                    Screen screen = clazz.newInstance();
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(screen);
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    System.err.println(ex.getMessage());
+                }
+
             }
 
         });
