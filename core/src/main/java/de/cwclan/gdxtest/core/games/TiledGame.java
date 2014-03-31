@@ -39,8 +39,8 @@ public class TiledGame implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-      //  camera.position.set(player.getX(), player.getY(), 0);
-        // camera.update();
+        //  camera.position.set(player.getX(), player.getY(), 0);
+        camera.update();
         renderer.setView(camera);
         renderer.render();
 
@@ -81,17 +81,16 @@ public class TiledGame implements Screen {
             @Override
             public boolean scrolled(int amount) {
                 camera.zoom += amount / 25f;
-                return true;
+                return false;
             }
 
-           
         }, new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 camera.translate(-deltaX, deltaY);
-                camera.update();
                 return false;
             }
+
         }), player.getInputProcessor()));
 
     }
