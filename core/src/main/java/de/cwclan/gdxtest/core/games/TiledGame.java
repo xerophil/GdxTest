@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import de.cwclan.gdxtest.core.screens.LevelMenu;
@@ -61,8 +62,9 @@ public class TiledGame implements Screen {
         map = new TmxMapLoader().load("maps/map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
-        player = new MapPlayer(new Sprite(new Texture("img/player.png")));
+        player = new MapPlayer(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(600, 2500);
+        camera.position.set(player.getX(), player.getY(), 0);
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputAdapter() {
 
             @Override

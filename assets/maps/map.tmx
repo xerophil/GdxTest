@@ -2,10 +2,15 @@
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="minecraft" tilewidth="32" tileheight="32">
   <image source="terrain.png" width="512" height="512"/>
+  <tile id="7">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Kachelebene 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2VGOgjAUQFF0C65gmCVMwv6XNj+SEKME9JX3sOfjfJK0vSkVexmG4QLQketC9ljQo4rriuyx9WatRasu01323Ctaa/B7F9llGvTY22Rs0GNakT3/I22Zd+v9sdaitzZb57rcG+PwvE/rFt/eY+9cnzUYg8egx2c9Is5xPd7r8azNnx5Neux9dm4x9ziqSfaaHdUku8eWJtlrVb3HkWd79jod3ePd86PVt3mPLaJ6LL9Hoptkr89Zejw2ifxfsdcWjz0qvLN6F91Dk9ge9ki+qB7zuZ49n2/gnVVLdA9dYnrsfS7jfr0He3qsrXvkXVWvou5A7I+aPX7u9MjvMb+v9KjVw/vq8xZ7fl85O2r12Nole35nE3HfoEebFp/eOWhRqwexXbLHAQAAAAAAcEa3heyxoEclt0GPSvSoR49a7JFa9KjjsYUeevC6hR56oEdFWtRhb9SiRS1a1GFv1KJFPToAAAAAAAAAAAAAAFn+AQHpW0k=
+   eJzt2UGOgjAUgGF05d4TjHOESbz/0WYjCTGIrbS8h3yLb0nS9k8p2tMwDCeAAzlPRI8FPbI4L4ge2ze5FFhq0avL/SF6fTJaavD78K7L5YMWepQ3uXXocV8QPf8tlcy79/5YanG0NqVzne6N2zDf59WzSz1qWnx7j9q5zjW4FTw3fhvo0b9H6fdVqz0SvWaZesy1+dOjS4/aZ8cWY493TVqd6dFrtlWT6B4lTaLXKnuPmrPdb5C6Hp+eH6Vn+poe0Wu0tx7T3yNresw1iV6fvfR4btKqx3RM0WsT3aPnO6umx5G17tHiP94jW3t+uqPq3+TTHuO5Hj2fb7DFO4v6HiV3uDX3udHz2quW37y6bNtjad1r76p43WLtHYj9kbPHz4Me8T3G95UeuXp4X61vUfN95ezI1aO0S/T89qbFfYMefVqsvXPQIlcP2naJHgcAAAAAAMAeXSeix4IemVwHPTLRIx89crFHctEjj+cWeujB6xZ66IEeGWmRh72Rixa5aJGHvZGLFvnoAAAAAAAAAAAAAABE+Qf5ZVwX
   </data>
  </layer>
 </map>

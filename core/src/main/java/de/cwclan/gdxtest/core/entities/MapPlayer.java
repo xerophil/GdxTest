@@ -11,6 +11,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -46,7 +47,7 @@ public class MapPlayer extends Sprite {
 
         @Override
         public boolean keyUp(int keycode) {
-                      switch (keycode) {
+            switch (keycode) {
                 case Input.Keys.A:
                 case Input.Keys.D:
                     velocity.x = 0;
@@ -63,11 +64,13 @@ public class MapPlayer extends Sprite {
 
     };
 
- 
+    private final TiledMapTileLayer collisionLayer;
 
-    
-    public MapPlayer(Sprite sprite) {
+    public MapPlayer(Sprite sprite, TiledMapTileLayer collisionLayer) {
         super(sprite);
+        tileHeight = collisionLayer.getTileHeight();
+        tileWidth = collisionLayer.getTileWidth();
+        this.collisionLayer = collisionLayer;
     }
 
     @Override
@@ -86,13 +89,62 @@ public class MapPlayer extends Sprite {
 //            velocity.y = -speed;
 //        }
 
+        //collision detection
+        float oldX = getX(), oldY = getY();
+        boolean collisionX = false, collisionY = false;
+
         setX(getX() + velocity.x * deltaTime);
+        //move on x
+        if (velocity.x < 0) { //links
+
+            //unten links
+            collisionX = isColliding(getX(), getY());
+            //oben links
+            collisionX |= isColliding(getX(), getY() + getHeight());
+
+        } else if (velocity.x > 0) { //rechts
+
+            //unten rechts
+            collisionX = isColliding(getX() + getWidth(), getY());
+            //oben rechts
+            collisionX |= isColliding(getX() + getWidth(), getY() + getHeight());
+
+        }
+        if (collisionX) {
+            setX(oldX);
+            velocity.x = 0;
+        }
+
         setY(getY() + velocity.y * deltaTime);
+        //move on y
+        if (velocity.y < 0) { //unten
+            //unten links
+            collisionY = isColliding(getX(), getY());
+            //unten rechts
+            collisionY |= isColliding(getX()+getWidth(), getY());
+            
+        } else if (velocity.y > 0) { //oben
+            //oben links
+            collisionY = isColliding(getX(), getY() + getHeight());
+            //oben rechts
+            collisionY |= isColliding(getX()+getWidth(), getY() + getHeight());
+        }
+        if (collisionY) {
+            setY(oldY);
+            velocity.y = 0;
+        }
+
     }
+
+    private boolean isColliding(float x, float y) {
+        return collisionLayer.getCell((int) (x / tileHeight), (int) (y / tileWidth)).getTile().getProperties().containsKey("blocked");
+    }
+
+    private float tileHeight;
+    private float tileWidth;
 
     public InputProcessor getInputProcessor() {
         return inputProcessor;
     }
-    
 
 }
