@@ -7,10 +7,20 @@
     <property name="blocked" value=""/>
    </properties>
   </tile>
+  <tile id="99">
+   <properties>
+    <property name="animation" value="torch"/>
+   </properties>
+  </tile>
+  <tile id="115">
+   <properties>
+    <property name="animation" value="torch"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Kachelebene 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2UGOgjAUgGF05d4TjHOESbz/0WYjCTGIrbS8h3yLb0nS9k8p2tMwDCeAAzlPRI8FPbI4L4ge2ze5FFhq0avL/SF6fTJaavD78K7L5YMWepQ3uXXocV8QPf8tlcy79/5YanG0NqVzne6N2zDf59WzSz1qWnx7j9q5zjW4FTw3fhvo0b9H6fdVqz0SvWaZesy1+dOjS4/aZ8cWY493TVqd6dFrtlWT6B4lTaLXKnuPmrPdb5C6Hp+eH6Vn+poe0Wu0tx7T3yNresw1iV6fvfR4btKqx3RM0WsT3aPnO6umx5G17tHiP94jW3t+uqPq3+TTHuO5Hj2fb7DFO4v6HiV3uDX3udHz2quW37y6bNtjad1r76p43WLtHYj9kbPHz4Me8T3G95UeuXp4X61vUfN95ezI1aO0S/T89qbFfYMefVqsvXPQIlcP2naJHgcAAAAAAMAeXSeix4IemVwHPTLRIx89crFHctEjj+cWeujB6xZ66IEeGWmRh72Rixa5aJGHvZGLFvnoAAAAAAAAAAAAAABE+Qf5ZVwX
+   eJzt2UtuwjAUQNHAiDkrKF1CJVbG/tUJkaIoMXY+vAc5gzMjku0rx2l96rruBHAg54HosaBHFueC6LF9k0uFUou9utyfotcno1KD36dXXS4LWuhR3+S2Q497QfT836lm3nvvj1KLo7Wpnetwb9y66T5zz5Z6tLT49h6tc51qcKt4rv820GP/HrXfV1vtkeg1y9Rjqs3fTI+HHqt6tD7bt+h7jJu09GhpEr1m72oS3aOmSfRaZe9ROtu37hG9Tu/usfT8mDvTt+wRvUaf1mP498jc72v/Z3LkFmt6jJts1WM4pui1ie6x9Tur1GP8PmOfHn2TV+eHHnU9ljR5TPR4RY/6Jq09xue6Hts2WdqjZY/oUdej5g635T5Xj3U9Wp+LuF8/gpYepXVvvativsXaOxD7I2ePnyc94nv07ys9cvXwvlrfouX7ytmRq0dtl+j5fZot7hv02KfF2jsHLXL1YNsu0eMAAAAAAAD4RNeB6LGgRybXTo9M9MhHj1zskVz0yGPcQg89mG+hhx7okZEWedgbuWiRixZ52Bu5aJGPDgAAAAAAAAAAAABAlH+c6WHt
   </data>
  </layer>
 </map>

@@ -17,10 +17,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.utils.Array;
 import de.cwclan.gdxtest.core.screens.LevelMenu;
+import java.util.Iterator;
 
 /**
  *
@@ -44,6 +49,7 @@ public class TiledGame implements Screen {
         camera.update();
         renderer.setView(camera);
         renderer.render();
+        AnimatedTiledMapTile.updateAnimationBaseTime();
 
         renderer.getSpriteBatch().begin();
         player.draw(renderer.getSpriteBatch());
@@ -94,6 +100,32 @@ public class TiledGame implements Screen {
             }
 
         }), player.getInputProcessor()));
+
+        //animated tiles
+        Array<StaticTiledMapTile> frameTiles = new Array<>(2);
+
+        //find the tile frames
+        for (TiledMapTile tiledMapTile : map.getTileSets().getTileSet("minecraft")) {
+            if (tiledMapTile.getProperties().containsKey("animation") && tiledMapTile.getProperties().get("animation", String.class).equals("torch")) {
+                frameTiles.add((StaticTiledMapTile) tiledMapTile);
+            }
+        }
+        //create the animated tile
+        AnimatedTiledMapTile animatedTile = new AnimatedTiledMapTile(1 / 3f, frameTiles);
+        //add the original properties to the new animated tile
+        for (TiledMapTile staticTiledMapTile : frameTiles) {
+            animatedTile.getProperties().putAll(staticTiledMapTile.getProperties());
+        }
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+
+        for (int x = 0; x < layer.getWidth(); x++) {
+            for (int y = 0; y < layer.getHeight(); y++) {
+                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                if (cell.getTile().getProperties().containsKey("animation") && cell.getTile().getProperties().get("animation", String.class).equals("torch")) {
+                    cell.setTile(animatedTile);
+                }
+            }
+        }
 
     }
 
