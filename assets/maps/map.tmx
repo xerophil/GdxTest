@@ -18,9 +18,14 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Kachelebene 1" width="100" height="100">
+ <layer name="background" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJzt2UtuwjAUQNHAiDkrKF1CJVbG/tUJkaIoMXY+vAc5gzMjku0rx2l96rruBHAg54HosaBHFueC6LF9k0uFUou9utyfotcno1KD36dXXS4LWuhR3+S2Q497QfT836lm3nvvj1KLo7Wpnetwb9y66T5zz5Z6tLT49h6tc51qcKt4rv820GP/HrXfV1vtkeg1y9Rjqs3fTI+HHqt6tD7bt+h7jJu09GhpEr1m72oS3aOmSfRaZe9ROtu37hG9Tu/usfT8mDvTt+wRvUaf1mP498jc72v/Z3LkFmt6jJts1WM4pui1ie6x9Tur1GP8PmOfHn2TV+eHHnU9ljR5TPR4RY/6Jq09xue6Hts2WdqjZY/oUdej5g635T5Xj3U9Wp+LuF8/gpYepXVvvativsXaOxD7I2ePnyc94nv07ys9cvXwvlrfouX7ytmRq0dtl+j5fZot7hv02KfF2jsHLXL1YNsu0eMAAAAAAAD4RNeB6LGgRybXTo9M9MhHj1zskVz0yGPcQg89mG+hhx7okZEWedgbuWiRixZ52Bu5aJGPDgAAAAAAAAAAAABAlH+c6WHt
+  </data>
+ </layer>
+ <layer name="animation" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1OEKgyAUgFF9596f/W1xNTUriXMgCNfcuB+ZEgAAcLft7T/AHz363D0vPfrosRY91vJED03azZxVfuA3vk6Pteixlpnnux5z6LEWPdYy68yKemwnnxO72iMnPWbqeUdy5Yr23X+Pdi09ai30mKunx8ieerxPj7XoAQAAAAAAAMBXbIerZy1V7hkTzbNnLbpnXGm26bDe884w7uwMKj2zf06PeaI5Rn1Ka9HzjCvNsXRO1c40rmudY9RhZB8AAAAAAAAAAAAAAAAAAAAAAADgmh8EBDJu
   </data>
  </layer>
 </map>

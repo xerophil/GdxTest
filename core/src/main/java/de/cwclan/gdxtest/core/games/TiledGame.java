@@ -116,17 +116,21 @@ public class TiledGame implements Screen {
         for (TiledMapTile staticTiledMapTile : frameTiles) {
             animatedTile.getProperties().putAll(staticTiledMapTile.getProperties());
         }
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 
         for (int x = 0; x < layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
                 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-                if (cell.getTile().getProperties().containsKey("animation") && cell.getTile().getProperties().get("animation", String.class).equals("torch")) {
-                    cell.setTile(animatedTile);
+                if (cell != null) {
+                    String value = cell.getTile().getProperties().get("animation", String.class);
+
+                    if (value != null) {
+                        cell.setTile(animatedTile);
+                    }
                 }
+
             }
         }
-
     }
 
     @Override
