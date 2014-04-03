@@ -15,7 +15,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -23,9 +27,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import de.cwclan.gdxtest.core.screens.LevelMenu;
-import java.util.Iterator;
 
 /**
  *
@@ -35,6 +39,7 @@ public class TiledGame implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
 
     private MapPlayer player;
@@ -54,6 +59,21 @@ public class TiledGame implements Screen {
         renderer.getSpriteBatch().begin();
         player.draw(renderer.getSpriteBatch());
         renderer.getSpriteBatch().end();
+
+        //render objects
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        for (MapObject mapObject : map.getLayers().get(2).getObjects()) {
+            if (mapObject instanceof RectangleMapObject) {
+                Rectangle rect = ((RectangleMapObject) mapObject).getRectangle();
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+                shapeRenderer.end();
+            } else if (mapObject instanceof PolylineMapObject) {
+
+            } else {
+                assert false;
+            }
+        }
     }
 
     @Override
@@ -67,6 +87,7 @@ public class TiledGame implements Screen {
     public void show() {
         map = new TmxMapLoader().load("maps/map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
+        shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         player = new MapPlayer(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(600, 2500);
