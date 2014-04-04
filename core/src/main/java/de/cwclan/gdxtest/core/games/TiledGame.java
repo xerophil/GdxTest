@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import de.cwclan.gdxtest.core.screens.LevelMenu;
@@ -69,7 +71,10 @@ public class TiledGame implements Screen {
                 shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
                 shapeRenderer.end();
             } else if (mapObject instanceof PolylineMapObject) {
-
+                Polyline polyline = ((PolylineMapObject) mapObject).getPolyline();
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                shapeRenderer.polygon(polyline.getTransformedVertices());
+                shapeRenderer.end();
             } else {
                 assert false;
             }
@@ -88,6 +93,8 @@ public class TiledGame implements Screen {
         map = new TmxMapLoader().load("maps/map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setColor(Color.CYAN.r, Color.CYAN.g, Color.CYAN.b, .5f);
+        
         camera = new OrthographicCamera();
         player = new MapPlayer(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(600, 2500);
